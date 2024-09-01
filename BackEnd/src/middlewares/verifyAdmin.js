@@ -1,4 +1,4 @@
-const authService = require('../services/auth');
+const authService = require('../services/user');
 
 const requireAdmin = (req, res, next) => {
   const accessToken = req.headers.authorization.split(' ')[1];

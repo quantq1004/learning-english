@@ -1,4 +1,5 @@
-const authService = require('../services/auth');
+const authService = require('../services/user');
+const userDao = require('../daos/user');
 
 const register = async (req, res) => {
   const { email, name, password } = req.body;
@@ -15,4 +16,12 @@ const login = async (req, res) => {
   return res.send({ status: 1, result: { accessToken } });
 };
 
-module.exports = { register, login };
+const getUserById = async (req, res) => {
+  const { id } = req.params;
+  let user = await userDao.getUserById(id);
+  if (user.toObject) user = user.toObject();
+  delete user.password;
+  return res.send({ status: 1, result: { user } });
+};
+
+module.exports = { register, login, getUserById };

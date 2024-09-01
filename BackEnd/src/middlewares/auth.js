@@ -1,7 +1,7 @@
 const asyncMiddleware = require('./async');
 const CustomError = require('../errors/CustomError');
 const codes = require('../errors/code');
-const authService = require('../services/auth');
+const authService = require('../services/user');
 
 const auth = async (req, res, next) => {
   const { authorization } = req.headers;
@@ -13,7 +13,7 @@ const auth = async (req, res, next) => {
 
   const { user } = await authService.verifyAccessToken(accessToken);
   req.user = user;
-  if (['/auths/logout', '/auths/verify'].includes(req.path)) {
+  if (['/users/logout', '/users/verify'].includes(req.path)) {
     req.accessToken = accessToken;
   }
 
