@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useSnackbar } from 'notistack';
 import { DialogContent, Grid } from '@mui/material';
 import {
   StyledAddDialog,
@@ -11,33 +10,46 @@ import {
 import { createCard } from '../../apis/card';
 
 const DialogAddCard = ({ open, onClose, lessonId, fetchCards }) => {
-  const [name, setName] = useState('');
-  const [imageURL, setImageURL] = useState('');
-  const [desc, setDesc] = useState('');
+  const [formValues, setFormValues] = useState({
+    name: '',
+    imageURL: '',
+    desc: '',
+  });
+  const [errors, setErrors] = useState({});
 
-  const { enqueueSnackbar } = useSnackbar();
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
+    if (value) {
+      setErrors((prevErrors) => ({ ...prevErrors, [name]: '' }));
+    }
+  };
 
-  const handleNameChange = (e) => setName(e.target.value);
-
-  const handleImageURLChange = (e) => setImageURL(e.target.value);
-
-  const handleDescChange = (e) => setDesc(e.target.value);
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formValues.name) newErrors.name = 'Name is required';
+    if (!formValues.imageURL) newErrors.imageURL = 'Image URL is required';
+    if (!formValues.desc) newErrors.desc = 'Description is required';
+    return newErrors;
+  };
 
   const handleCreate = async (e) => {
     e.preventDefault();
-    if (!name && !imageURL && !desc) {
-      onClose();
+
+    const newErrors = validateForm();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
-    const response = await createCard({ name, imageURL, desc, lessonId });
+
+    const response = await createCard({ ...formValues, lessonId });
     if (response.status === 0) {
-      enqueueSnackbar(response.message, { variant: 'error' });
+      setErrors({ form: response.message });
+    } else {
+      setFormValues({ name: '', imageURL: '', desc: '' });
+      fetchCards(lessonId);
+      onClose();
     }
-    setName('');
-    setImageURL('');
-    setDesc('');
-    fetchCards(lessonId);
-    onClose();
   };
 
   return (
@@ -50,27 +62,36 @@ const DialogAddCard = ({ open, onClose, lessonId, fetchCards }) => {
               <StyledTextField
                 type="text"
                 placeholder="Name"
-                value={name}
-                onChange={handleNameChange}
+                name="name"
+                value={formValues.name}
+                onChange={handleChange}
                 className="customTextField"
+                error={Boolean(errors.name)}
+                helperText={errors.name}
               />
             </Grid>
             <Grid item xs={12}>
               <StyledTextField
                 type="text"
                 placeholder="Image URL"
-                value={imageURL}
-                onChange={handleImageURLChange}
+                name="imageURL"
+                value={formValues.imageURL}
+                onChange={handleChange}
                 className="customTextField"
+                error={Boolean(errors.imageURL)}
+                helperText={errors.imageURL}
               />
             </Grid>
             <Grid item xs={12}>
               <StyledTextField
                 type="text"
                 placeholder="Description"
-                value={desc}
-                onChange={handleDescChange}
+                name="desc"
+                value={formValues.desc}
+                onChange={handleChange}
                 className="customTextField"
+                error={Boolean(errors.desc)}
+                helperText={errors.desc}
               />
             </Grid>
           </Grid>
@@ -85,4 +106,5 @@ const DialogAddCard = ({ open, onClose, lessonId, fetchCards }) => {
     </StyledAddDialog>
   );
 };
+
 export default DialogAddCard;

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useSnackbar } from 'notistack';
 import { DialogContent, Grid } from '@mui/material';
 import {
   StyledEditDialog,
@@ -17,44 +16,60 @@ const DialogEditCard = ({
   lessonId,
   fetchCards,
 }) => {
-  const [name, setName] = useState('');
-  const [imageURL, setImageURL] = useState('');
-  const [desc, setDesc] = useState('');
-
-  const { enqueueSnackbar } = useSnackbar();
-
-  const handleNameChange = (e) => setName(e.target.value);
-
-  const handleImageURLChange = (e) => setImageURL(e.target.value);
-
-  const handleDescChange = (e) => setDesc(e.target.value);
-
-  const handleEdit = async (e) => {
-    e.preventDefault();
-    if (!name && !imageURL && !desc) {
-      onClose();
-      return;
-    }
-    const response = await updateCard({
-      cardId: selectedCard.id,
-      name,
-      imageURL,
-      desc,
-    });
-    if (response.status === 0) {
-      enqueueSnackbar(response.message, { variant: 'error' });
-    }
-    fetchCards(lessonId);
-    onClose();
-  };
+  const [formValues, setFormValues] = useState({
+    name: '',
+    imageURL: '',
+    desc: '',
+  });
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (selectedCard) {
-      setName(selectedCard.name);
-      setImageURL(selectedCard.imageUrl);
-      setDesc(selectedCard.desc);
+      setFormValues({
+        name: selectedCard.name || '',
+        imageURL: selectedCard.imageUrl || '',
+        desc: selectedCard.desc || '',
+      });
     }
   }, [selectedCard]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
+    if (value) {
+      setErrors((prevErrors) => ({ ...prevErrors, [name]: '' }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formValues.name) newErrors.name = 'Name is required';
+    if (!formValues.imageURL) newErrors.imageURL = 'Image URL is required';
+    if (!formValues.desc) newErrors.desc = 'Description is required';
+    return newErrors;
+  };
+
+  const handleEdit = async (e) => {
+    e.preventDefault();
+
+    const newErrors = validateForm();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    const response = await updateCard({
+      cardId: selectedCard.id,
+      ...formValues,
+    });
+
+    if (response.status === 0) {
+      setErrors({ form: response.message });
+    } else {
+      fetchCards(lessonId);
+      onClose();
+    }
+  };
 
   return (
     <StyledEditDialog open={open} onClose={onClose}>
@@ -66,27 +81,36 @@ const DialogEditCard = ({
               <StyledTextField
                 type="text"
                 placeholder="Name"
-                value={name}
-                onChange={handleNameChange}
+                name="name"
+                value={formValues.name}
+                onChange={handleChange}
                 className="customTextField"
+                error={Boolean(errors.name)}
+                helperText={errors.name}
               />
             </Grid>
             <Grid item xs={12}>
               <StyledTextField
                 type="text"
                 placeholder="Image URL"
-                value={imageURL}
-                onChange={handleImageURLChange}
+                name="imageURL"
+                value={formValues.imageURL}
+                onChange={handleChange}
                 className="customTextField"
+                error={Boolean(errors.imageURL)}
+                helperText={errors.imageURL}
               />
             </Grid>
             <Grid item xs={12}>
               <StyledTextField
                 type="text"
                 placeholder="Description"
-                value={desc}
-                onChange={handleDescChange}
+                name="desc"
+                value={formValues.desc}
+                onChange={handleChange}
                 className="customTextField"
+                error={Boolean(errors.desc)}
+                helperText={errors.desc}
               />
             </Grid>
           </Grid>
