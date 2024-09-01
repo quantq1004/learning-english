@@ -20,4 +20,16 @@ const findUser = async (condition) => {
   return null;
 };
 
-module.exports = { createUser, findUser };
+const getUserById = async (id) => {
+  const user = await User.findById(id);
+  return user;
+};
+
+const updateUser = async (id, updateFields) => {
+  const user = await User.findByIdAndUpdate(id, updateFields, {
+    new: true,
+  });
+  return user;
+};
+
+module.exports = { createUser, findUser, getUserById, updateUser };

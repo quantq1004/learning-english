@@ -4,7 +4,7 @@ const login = async (email, password) => {
   try {
     const response = await api({
       method: 'POST',
-      url: '/auths/login',
+      url: '/users/login',
       data: { email, password },
     });
 
@@ -18,7 +18,7 @@ const register = async (name, email, password) => {
   try {
     const response = await api({
       method: 'POST',
-      url: '/auths/register',
+      url: '/users/register',
       data: { name, email, password },
     });
     return response;
