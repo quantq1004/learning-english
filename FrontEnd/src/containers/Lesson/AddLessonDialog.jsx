@@ -35,7 +35,7 @@ const DialogAddLesson = ({
       hasError = true;
     } else setImageURLError('');
 
-    if (!hasError) onSubmitAdd();
+    if (!hasError) onSubmitAdd(e);
   };
 
   return (

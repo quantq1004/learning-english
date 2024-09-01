@@ -12,8 +12,8 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body;
-  const accessToken = await authService.login(email, password);
-  return res.send({ status: 1, result: { accessToken } });
+  const { userId, accessToken } = await authService.login(email, password);
+  return res.send({ status: 1, result: { userId, accessToken } });
 };
 
 const getUserById = async (req, res) => {

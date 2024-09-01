@@ -13,7 +13,7 @@ import {
 import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';
 import Copyright from '../../components/Copyright/index';
 import getErrorMessage from '../../errors/message';
-import { register } from '../../apis/auth';
+import { register } from '../../apis/user';
 import {
   StyledContainer,
   StyledBox,

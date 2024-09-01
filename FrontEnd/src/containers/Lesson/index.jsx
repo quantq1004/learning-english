@@ -7,7 +7,7 @@ import {
   updateLesson,
   deleteLesson,
 } from '../../apis/lesson';
-import { removeToken } from '../../utils/localStorage';
+import { removeToken, removeUserId } from '../../utils/localStorage';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Welcome from '../../components/Welcome';
@@ -36,7 +36,10 @@ const LessonContainer = () => {
     setLessons(lessonsArray);
   };
 
-  const handleLogout = () => removeToken();
+  const handleLogout = () => {
+    removeToken();
+    removeUserId();
+  };
 
   const handleOpenCreate = () => setOpenCreate(true);
 

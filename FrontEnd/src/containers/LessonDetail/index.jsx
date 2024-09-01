@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import { CssBaseline } from '@mui/material';
 import { getCards, deleteCard } from '../../apis/card';
-import { removeToken } from '../../utils/localStorage';
+import { removeToken, removeUserId } from '../../utils/localStorage';
 import { AuthContext } from '../../checkAdminContext';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
@@ -47,8 +47,10 @@ const LessonDetail = ({ lessonId }) => {
     const cardsArray = response.result.cards;
     setCards(cardsArray);
   };
-
-  const handleLogout = () => removeToken();
+  const handleLogout = () => {
+    removeToken();
+    removeUserId();
+  };
 
   const handleNextCard = () => {
     if (currentIndex === cards.length - 1) {

@@ -1,10 +1,11 @@
 import api from './api';
 
-const getUserDetails = async () => {
+const login = async (email, password) => {
   try {
     const response = await api({
-      method: 'GET',
-      url: '/user',
+      method: 'POST',
+      url: '/users/login',
+      data: { email, password },
     });
 
     return response;
@@ -13,11 +14,11 @@ const getUserDetails = async () => {
   }
 };
 
-const updateUser = async (name, email, password) => {
+const register = async (name, email, password) => {
   try {
     const response = await api({
-      method: 'PUT',
-      url: '/user',
+      method: 'POST',
+      url: '/users/register',
       data: { name, email, password },
     });
     return response;
@@ -26,4 +27,30 @@ const updateUser = async (name, email, password) => {
   }
 };
 
-export { getUserDetails, updateUser };
+const getUserDetails = async (userId) => {
+  try {
+    const response = await api({
+      method: 'GET',
+      url: `/users/${userId}`,
+    });
+
+    return response;
+  } catch (error) {
+    return null;
+  }
+};
+
+const updateUser = async ({ name, email, userId }) => {
+  try {
+    const response = await api({
+      method: 'PUT',
+      url: `/users/${userId}`,
+      data: { name, email },
+    });
+    return response;
+  } catch (error) {
+    return null;
+  }
+};
+
+export { login, register, getUserDetails, updateUser };
