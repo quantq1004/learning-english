@@ -4,7 +4,7 @@ import { useSnackbar } from 'notistack';
 import { TextField, Box, Typography, Button } from '@mui/material';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import Copyright from '../../components/Copyright';
-import { removeToken } from '../../utils/localStorage';
+import { removeToken, getUserId, removeUserId } from '../../utils/localStorage';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import getErrorMessage from '../../errors/message';
@@ -18,24 +18,23 @@ import {
 
 const AccountManagement = () => {
   const navigate = useNavigate();
+  const userId = getUserId();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  // const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
 
   const { enqueueSnackbar } = useSnackbar();
 
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      const response = await getUserDetails();
-      if (response) {
-        setName(response.name || '');
-        setEmail(response.email || '');
-      }
-    };
-    fetchUserDetails();
-  }, []);
+  const fetchUserDetails = async (id) => {
+    const response = await getUserDetails(id);
+
+    if (response) {
+      setName(response?.result?.user?.name || '');
+      setEmail(response?.result?.user?.email || '');
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -43,25 +42,33 @@ const AccountManagement = () => {
     const validationErrors = {};
     if (!name) validationErrors.name = 'Name is required';
     if (!email) validationErrors.email = 'Email is required';
-    if (!password) validationErrors.password = 'Password is required';
+    // if (!password) validationErrors.password = 'Password is required';
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
 
-    const response = await updateUser({ name, email, password });
+    const response = await updateUser({ name, email, userId });
 
     if (response.status === 0) {
+      setErrors({});
       enqueueSnackbar(getErrorMessage(response.code), { variant: 'error' });
     } else {
+      setErrors({});
       enqueueSnackbar('Account updated successfully', { variant: 'success' });
     }
   };
-
-  const handleLogout = () => removeToken();
+  const handleLogout = () => {
+    removeToken();
+    removeUserId();
+  };
 
   const handleReturn = () => navigate('/');
+
+  useEffect(() => {
+    if (userId) fetchUserDetails(userId);
+  }, [userId]);
 
   return (
     <>
@@ -88,7 +95,6 @@ const AccountManagement = () => {
             label="Name"
             name="name"
             autoComplete="name"
-            autoFocus
             value={name}
             onChange={(e) => setName(e.target.value)}
             error={Boolean(errors.name)}
@@ -107,7 +113,7 @@ const AccountManagement = () => {
             error={Boolean(errors.email)}
             helperText={errors.email}
           />
-          <TextField
+          {/* <TextField
             margin="normal"
             required
             fullWidth
@@ -120,7 +126,7 @@ const AccountManagement = () => {
             onChange={(e) => setPassword(e.target.value)}
             error={Boolean(errors.password)}
             helperText={errors.password}
-          />
+          /> */}
           <StyledButton type="submit" className="customButton">
             Save Changes
           </StyledButton>

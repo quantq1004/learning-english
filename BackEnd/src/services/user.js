@@ -41,7 +41,7 @@ const login = async (email, password) => {
 
   const { isAdmin = false, _id: userId } = user;
   const accessToken = await generateAccessToken(userId, isAdmin);
-  return accessToken;
+  return { userId, accessToken };
 };
 
 const verifyAdmin = (accessToken) => {

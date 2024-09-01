@@ -15,8 +15,8 @@ import {
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Copyright from '../../components/Copyright';
 import getErrorMessage from '../../errors/message';
-import { login } from '../../apis/auth';
-import { setToken } from '../../utils/localStorage';
+import { login } from '../../apis/user';
+import { setToken, setUserId } from '../../utils/localStorage';
 import {
   StyledGrid,
   StyledBackgroundGrid,
@@ -50,8 +50,9 @@ const LoginContainer = () => {
 
     setIsLogined(true);
     if (response && response.result) {
-      const { accessToken } = response.result;
+      const { userId, accessToken } = response.result;
       if (accessToken) setToken(accessToken);
+      if (userId) setUserId(userId);
     }
   };
 

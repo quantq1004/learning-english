@@ -4,4 +4,10 @@ const getToken = () => localStorage.getItem('token');
 
 const removeToken = () => localStorage.removeItem('token');
 
-export { setToken, getToken, removeToken };
+const setUserId = (userId) => localStorage.setItem('userId', userId);
+
+const getUserId = () => localStorage.getItem('userId');
+
+const removeUserId = () => localStorage.removeItem('userId');
+
+export { setToken, getToken, removeToken, setUserId, getUserId, removeUserId };

@@ -21,7 +21,11 @@ const Header = ({ onLogout }) => {
 
   const handleCloseMenu = () => {
     setAnchorEl(null);
+  };
+
+  const handleToAcount = () => {
     navigate('/account');
+    handleCloseMenu();
   };
 
   const onLogoutClick = () => {
@@ -48,7 +52,7 @@ const Header = ({ onLogout }) => {
             open={Boolean(anchorEl)}
             onClose={handleCloseMenu}
           >
-            <StyledMenuItem onClick={handleCloseMenu} className="customItem">
+            <StyledMenuItem onClick={handleToAcount} className="customItem">
               Manage your account
             </StyledMenuItem>
             <StyledMenuItem onClick={onLogoutClick}>
