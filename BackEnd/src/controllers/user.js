@@ -24,4 +24,13 @@ const getUserById = async (req, res) => {
   return res.send({ status: 1, result: { user } });
 };
 
-module.exports = { register, login, getUserById };
+const updateUser = async (req, res) => {
+  const { id } = req.params;
+  const updateFields = req.body;
+  let user = await userDao.updateUser(id, updateFields);
+  if (user.toObject) user = user.toObject();
+  delete user.password;
+  return res.send({ status: 1, result: { user } });
+};
+
+module.exports = { register, login, getUserById, updateUser };
