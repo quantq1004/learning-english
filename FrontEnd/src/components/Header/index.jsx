@@ -19,7 +19,10 @@ const Header = ({ onLogout }) => {
 
   const handleIconClick = (event) => setAnchorEl(event.currentTarget);
 
-  const handleCloseMenu = () => setAnchorEl(null);
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+    navigate('/account');
+  };
 
   const onLogoutClick = () => {
     onLogout();
