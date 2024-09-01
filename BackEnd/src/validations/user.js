@@ -15,7 +15,16 @@ const register = {
   }),
 };
 
+const updateUser = {
+  body: Joi.object({
+    email: Joi.string().email().trim().lowercase().optional(),
+    name: Joi.string().trim().optional(),
+    password: Joi.string().trim().optional,
+  }),
+};
+
 module.exports = {
   loginValidate: validate(login, { keyByField: true }),
   registerValidate: validate(register, { keyByField: true }),
+  updateUserValidate: validate(updateUser, { keyByField: true }),
 };
