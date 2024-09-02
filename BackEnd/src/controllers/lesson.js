@@ -3,7 +3,7 @@ const lessonDao = require('../daos/lesson');
 const createLesson = async (req, res) => {
   const { title, imageURL } = req.body;
   const lesson = await lessonDao.createLesson({ title, imageURL });
-  return res.send({ status: 1, result: { lesson } });
+  return res.send({ lesson });
 };
 
 const getLessons = async (req, res) => {
@@ -39,20 +39,20 @@ const getLessons = async (req, res) => {
 const getLesson = async (req, res) => {
   const { id } = req.params;
   const lesson = await lessonDao.getLesson(id);
-  return res.send({ status: 1, result: { lesson } });
+  return res.send({ lesson });
 };
 
 const updateLesson = async (req, res) => {
   const { id } = req.params;
   const updateInfo = req.body;
   const lesson = await lessonDao.updateLesson(id, updateInfo);
-  return res.send({ status: 1, result: { lesson } });
+  return res.send({ lesson });
 };
 
 const deleteLesson = async (req, res) => {
   const { id } = req.params;
   await lessonDao.deleteLesson(id);
-  return res.send({ status: 1 });
+  return res.send({});
 };
 
 module.exports = {

@@ -41,6 +41,7 @@ const transformObjectId = (obj) => {
 };
 
 const snakecaseRes = () =>
+  // eslint-disable-next-line no-unused-vars
   mung.json((body, req, res) =>
     snakecaseKeys(transformObjectId(body), {
       deep: true,
