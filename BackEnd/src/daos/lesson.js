@@ -1,14 +1,18 @@
 const { ObjectId } = require('mongoose').Types;
 const Lesson = require('../models/lessons');
+const daoUtils = require('./utils');
 
 const createLesson = async ({ title, imageURL }) => {
   const lesson = await Lesson.create({ title, imageURL });
   return lesson;
 };
 
-const getLessons = async (condition) => {
-  const lessons = await Lesson.find(condition).lean();
-  return lessons;
+const findLessons = async (queryFields) => {
+  const { documents: lessons, total } = await daoUtils.findAll(
+    Lesson,
+    queryFields,
+  );
+  return { lessons, total };
 };
 
 const getLesson = async (condition) => {
@@ -37,7 +41,7 @@ const deleteLesson = async (id) => {
 
 module.exports = {
   createLesson,
-  getLessons,
+  findLessons,
   getLesson,
   updateLesson,
   deleteLesson,

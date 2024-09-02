@@ -7,9 +7,33 @@ const createLesson = async (req, res) => {
 };
 
 const getLessons = async (req, res) => {
-  const searchParams = req.query;
-  const lessons = await lessonDao.getLessons(searchParams);
-  return res.send({ status: 1, result: { lessons } });
+  const { search, searchFields, fields, offset, limit, sort } = req.query;
+  const query = {};
+
+  query.query = {};
+  if (search) query.search = search;
+  if (searchFields) query.searchFields = searchFields.split(',');
+  if (fields) query.fields = fields.split(',');
+  if (offset) query.offset = parseInt(offset, 10);
+  if (limit) query.limit = parseInt(limit, 10);
+  if (sort) query.sort = sort.split(',');
+
+  Object.keys(req.query)
+    .filter(
+      (q) =>
+        ['search', 'searchFields', 'fields', 'offset', 'limit', 'sort'].indexOf(
+          q,
+        ) === -1,
+    )
+    .forEach((q) => {
+      query.query[q] = ['true', 'false'].includes(req.query[q])
+        ? JSON.parse(req.query[q])
+        : req.query[q];
+    });
+
+  const { lessons, total } = await lessonDao.findLessons(query);
+
+  return res.send({ lessons, total });
 };
 
 const getLesson = async (req, res) => {
