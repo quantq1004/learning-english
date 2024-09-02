@@ -1,5 +1,6 @@
 const { ObjectId } = require('mongoose').Types;
 const User = require('../models/users');
+const daoUtils = require('./utils');
 
 const createUser = async ({ email, name, password }) => {
   const user = await User.create({ email, name, password });
@@ -32,4 +33,9 @@ const updateUser = async (id, updateFields) => {
   return user;
 };
 
-module.exports = { createUser, findUser, getUserById, updateUser };
+const findUsers = async (queryFields) => {
+  const { documents: users, total } = await daoUtils.findAll(User, queryFields);
+  return { users, total };
+};
+
+module.exports = { createUser, findUser, getUserById, updateUser, findUsers };
