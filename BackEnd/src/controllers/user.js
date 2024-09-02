@@ -5,15 +5,14 @@ const register = async (req, res) => {
   const { email, name, password } = req.body;
   const user = await authService.register({ email, name, password });
   return res.send({
-    status: 1,
-    result: { email: user.email, name: user.name },
+    user: { email: user.email, name: user.name },
   });
 };
 
 const login = async (req, res) => {
   const { email, password } = req.body;
   const { userId, accessToken } = await authService.login(email, password);
-  return res.send({ status: 1, result: { userId, accessToken } });
+  return res.send({ user: { userId, accessToken } });
 };
 
 const getUserById = async (req, res) => {
@@ -21,7 +20,7 @@ const getUserById = async (req, res) => {
   let user = await userDao.getUserById(id);
   if (user.toObject) user = user.toObject();
   delete user.password;
-  return res.send({ status: 1, result: { user } });
+  return res.send({ user });
 };
 
 const updateUser = async (req, res) => {
@@ -30,7 +29,7 @@ const updateUser = async (req, res) => {
   let user = await userDao.updateUser(id, updateFields);
   if (user.toObject) user = user.toObject();
   delete user.password;
-  return res.send({ status: 1, result: { user } });
+  return res.send({ user });
 };
 
 const getUsers = async (req, res) => {
