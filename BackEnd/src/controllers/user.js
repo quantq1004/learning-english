@@ -33,4 +33,39 @@ const updateUser = async (req, res) => {
   return res.send({ status: 1, result: { user } });
 };
 
-module.exports = { register, login, getUserById, updateUser };
+const getUsers = async (req, res) => {
+  const { search, searchFields, fields, offset, limit, sort } = req.query;
+  const query = {};
+
+  query.query = {};
+  if (search) query.search = search;
+  if (searchFields) query.searchFields = searchFields.split(',');
+  if (fields) query.fields = fields.split(',');
+  if (offset) query.offset = parseInt(offset, 10);
+  if (limit) query.limit = parseInt(limit, 10);
+  if (sort) query.sort = sort.split(',');
+
+  Object.keys(req.query)
+    .filter(
+      (q) =>
+        ['search', 'searchFields', 'fields', 'offset', 'limit', 'sort'].indexOf(
+          q,
+        ) === -1,
+    )
+    .forEach((q) => {
+      query.query[q] = ['true', 'false'].includes(req.query[q])
+        ? JSON.parse(req.query[q])
+        : req.query[q];
+    });
+  const { users, total } = await userDao.findUsers(query);
+
+  // Remove the password field from each user object
+  const sanitizedUsers = users.map((user) => {
+    const { password, ...rest } = user;
+    return rest;
+  });
+
+  return res.send({ users: sanitizedUsers, total });
+};
+
+module.exports = { register, login, getUserById, updateUser, getUsers };
