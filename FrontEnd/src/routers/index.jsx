@@ -11,41 +11,54 @@ import LessonPage from '../pages/Lesson';
 import LessonDetailPage from '../pages/LessonDetail';
 import AccountPage from '../pages/Account';
 import UserManagementPage from '../pages/UserManagement';
+import ProtectedRoute from './ProtectedRoute';
 import { getToken } from '../utils/localStorage';
 
-const AppRouter = () => {
-  const token = getToken();
-
-  return (
-    <Router>
-      <Routes>
-        <Route
-          path="/"
-          element={!token ? <Navigate to="/login" /> : <LessonPage />}
-        />
-        <Route
-          path="/login"
-          element={token ? <Navigate to="/" /> : <LoginPage />}
-        />
-        <Route
-          path="/register"
-          element={token ? <Navigate to="/" /> : <RegisterPage />}
-        />
-        <Route
-          path="/:lessonId"
-          element={!token ? <Navigate to="/login" /> : <LessonDetailPage />}
-        />
-        <Route
-          path="/account"
-          element={!token ? <Navigate to="/login" /> : <AccountPage />}
-        />
-        <Route
-          path="/user-management"
-          element={!token ? <Navigate to="/login" /> : <UserManagementPage />}
-        />
-      </Routes>
-    </Router>
-  );
-};
+const AppRouter = () => (
+  <Router>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <LessonPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/login"
+        element={getToken() ? <Navigate to="/" /> : <LoginPage />}
+      />
+      <Route
+        path="/register"
+        element={getToken() ? <Navigate to="/" /> : <RegisterPage />}
+      />
+      <Route
+        path="/:lessonId"
+        element={
+          <ProtectedRoute>
+            <LessonDetailPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/account"
+        element={
+          <ProtectedRoute>
+            <AccountPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/user-management"
+        element={
+          <ProtectedRoute>
+            <UserManagementPage />
+          </ProtectedRoute>
+        }
+      />
+    </Routes>
+  </Router>
+);
 
 export default AppRouter;

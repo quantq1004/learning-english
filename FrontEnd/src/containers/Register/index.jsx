@@ -44,6 +44,8 @@ const RegisterContainer = () => {
       return;
     }
 
+    enqueueSnackbar('Register successfully', { variant: 'success' });
+
     setIsRegistered(true);
   };
 
