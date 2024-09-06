@@ -43,7 +43,7 @@ const DialogAddCard = ({ open, onClose, lessonId, fetchCards }) => {
     }
 
     const response = await createCard({ ...formValues, lessonId });
-    if (response.status === 0) {
+    if (response?.status === 0) {
       setErrors({ form: response.message });
     } else {
       setFormValues({ name: '', imageURL: '', desc: '' });

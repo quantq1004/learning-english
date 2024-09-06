@@ -64,7 +64,7 @@ export const StyledMenuItem = styled(MenuItem)`
   }
   &&.customItem {
     display: flex;
-    justify-content: center;
+    justify-content: start;
     font-weight: bold;
     font-size: 18px;
     border: 3px solid skyblue;

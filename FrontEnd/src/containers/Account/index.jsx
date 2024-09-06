@@ -51,7 +51,7 @@ const AccountManagement = () => {
 
     const response = await updateUser({ name, email, userId });
 
-    if (response.status === 0) {
+    if (response?.status === 0) {
       setErrors({});
       enqueueSnackbar(getErrorMessage(response?.result?.code), {
         variant: 'error',
