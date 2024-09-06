@@ -63,7 +63,7 @@ const DialogEditCard = ({
       ...formValues,
     });
 
-    if (response.status === 0) {
+    if (response?.status === 0) {
       setErrors({ form: response.message });
     } else {
       fetchCards(lessonId);

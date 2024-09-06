@@ -10,6 +10,7 @@ import RegisterPage from '../pages/Register';
 import LessonPage from '../pages/Lesson';
 import LessonDetailPage from '../pages/LessonDetail';
 import AccountPage from '../pages/Account';
+import UserManagementPage from '../pages/UserManagement';
 import { getToken } from '../utils/localStorage';
 
 const AppRouter = () => {
@@ -37,6 +38,10 @@ const AppRouter = () => {
         <Route
           path="/account"
           element={!token ? <Navigate to="/login" /> : <AccountPage />}
+        />
+        <Route
+          path="/user-management"
+          element={!token ? <Navigate to="/login" /> : <UserManagementPage />}
         />
       </Routes>
     </Router>

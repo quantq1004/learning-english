@@ -1,7 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { AppBar, Toolbar } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { Notifications, AccountCircle, ExitToApp } from '@mui/icons-material';
+import {
+  Notifications,
+  AccountCircle,
+  ExitToApp,
+  Settings,
+} from '@mui/icons-material';
+import { AuthContext } from '../../checkAdminContext';
 import {
   StyledAvatar,
   StyledTypography,
@@ -14,6 +20,7 @@ import {
 const Header = ({ onLogout }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
+  const isAdmin = useContext(AuthContext);
 
   const handleReturn = () => navigate('/');
 
@@ -25,6 +32,11 @@ const Header = ({ onLogout }) => {
 
   const handleToAcount = () => {
     navigate('/account');
+    handleCloseMenu();
+  };
+
+  const handleToUserManagement = () => {
+    navigate('/user-management');
     handleCloseMenu();
   };
 
@@ -53,8 +65,18 @@ const Header = ({ onLogout }) => {
             onClose={handleCloseMenu}
           >
             <StyledMenuItem onClick={handleToAcount} className="customItem">
+              <AccountCircle sx={{ mr: 2 }} />
               Manage your account
             </StyledMenuItem>
+            {isAdmin && (
+              <StyledMenuItem
+                onClick={handleToUserManagement}
+                className="customItem"
+              >
+                <Settings sx={{ mr: 2 }} />
+                User management
+              </StyledMenuItem>
+            )}
             <StyledMenuItem onClick={onLogoutClick}>
               <ExitToApp sx={{ mr: 2 }} />
               Log out

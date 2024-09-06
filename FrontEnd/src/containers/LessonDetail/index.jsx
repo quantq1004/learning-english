@@ -32,6 +32,7 @@ const LessonDetail = ({ lessonId }) => {
   const [openEdit, setOpenEdit] = useState(false);
   const [openFinishLesson, setOpenFinishLesson] = useState(false);
   const [completedCards, setCompletedCards] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -40,12 +41,15 @@ const LessonDetail = ({ lessonId }) => {
   const handleReturn = () => navigate('/');
 
   const fetchCards = async () => {
+    setLoading(true);
     const response = await getCards(lessonId);
-    if (response.status === 0) {
+    if (response?.status === 0) {
+      setLoading(false);
       return;
     }
     const cardsArray = response?.result?.cards;
     setCards(cardsArray);
+    setLoading(false);
   };
   const handleLogout = () => {
     removeToken();
@@ -95,7 +99,7 @@ const LessonDetail = ({ lessonId }) => {
 
   const handleDelete = async () => {
     const response = await deleteCard(selectedCard.id);
-    if (response.status === 0) {
+    if (response?.status === 0) {
       enqueueSnackbar(response.message, { variant: 'error' });
     }
     setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
@@ -150,7 +154,8 @@ const LessonDetail = ({ lessonId }) => {
         />
       </StyledBox>
       <StyledGrid>
-        {cards[currentIndex] && (
+        {loading && <StyledTypography>Loading...</StyledTypography>}
+        {!loading && cards[currentIndex] && (
           <CardItem
             card={cards[currentIndex]}
             key={cards[currentIndex].id}

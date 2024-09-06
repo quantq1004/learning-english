@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSnackbar } from 'notistack';
-import { Grid, CssBaseline } from '@mui/material';
+import { Grid, CssBaseline, Typography } from '@mui/material';
 import {
   getLessons,
   createLesson,
@@ -27,13 +27,20 @@ const LessonContainer = () => {
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [selectedLesson, setSelectedLesson] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar();
 
   const fetchLessons = async () => {
-    const { result } = await getLessons();
-    const lessonsArray = result.lessons;
+    setLoading(true);
+    const response = await getLessons();
+    if (response?.status === 0) {
+      setLoading(false);
+      return;
+    }
+    const lessonsArray = response?.result?.lessons;
     setLessons(lessonsArray);
+    setLoading(false);
   };
 
   const handleLogout = () => {
@@ -54,7 +61,7 @@ const LessonContainer = () => {
       return;
     }
     const response = await createLesson(title, imageURL);
-    if (response.status === 0) {
+    if (response?.status === 0) {
       enqueueSnackbar(response.message, { variant: 'error' });
     }
     setTitle('');
@@ -85,7 +92,7 @@ const LessonContainer = () => {
       editTitle,
       editImageURL,
     );
-    if (response.status === 0) {
+    if (response?.status === 0) {
       enqueueSnackbar(response.message, { variant: 'error' });
     }
     setEditTitle('');
@@ -106,7 +113,7 @@ const LessonContainer = () => {
 
   const handleDelete = async () => {
     const response = await deleteLesson(selectedLesson.id);
-    if (response.status === 0) {
+    if (response?.status === 0) {
       enqueueSnackbar(response.message, { variant: 'error' });
     }
     fetchLessons();
@@ -123,16 +130,19 @@ const LessonContainer = () => {
       <Header onLogout={handleLogout} />
       <Welcome onAddLesson={handleAddLesson} />
       <StyledContainer>
-        <Grid container spacing={4}>
-          {lessons.map((lesson) => (
-            <LessonItem
-              key={lesson.id}
-              lesson={lesson}
-              onEditLesson={handleEditLesson}
-              onDeleteLesson={handleOpenDelete}
-            />
-          ))}
-        </Grid>
+        {loading && <Typography>Loading...</Typography>}
+        {!loading && (
+          <Grid container spacing={4}>
+            {lessons.map((lesson) => (
+              <LessonItem
+                key={lesson.id}
+                lesson={lesson}
+                onEditLesson={handleEditLesson}
+                onDeleteLesson={handleOpenDelete}
+              />
+            ))}
+          </Grid>
+        )}
       </StyledContainer>
       <Footer />
       <>
