@@ -53,7 +53,9 @@ const AccountManagement = () => {
 
     if (response.status === 0) {
       setErrors({});
-      enqueueSnackbar(getErrorMessage(response.code), { variant: 'error' });
+      enqueueSnackbar(getErrorMessage(response?.result?.code), {
+        variant: 'error',
+      });
     } else {
       setErrors({});
       enqueueSnackbar('Account updated successfully', { variant: 'success' });

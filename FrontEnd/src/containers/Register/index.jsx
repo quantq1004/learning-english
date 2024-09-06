@@ -38,7 +38,7 @@ const RegisterContainer = () => {
       enqueueSnackbar('Register failed', { variant: 'error' });
       return;
     }
-    const errorMessage = getErrorMessage(response?.code);
+    const errorMessage = getErrorMessage(response?.result?.code);
     if (errorMessage) {
       enqueueSnackbar(errorMessage, { variant: 'error' });
       return;

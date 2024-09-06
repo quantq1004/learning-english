@@ -44,7 +44,7 @@ const LessonDetail = ({ lessonId }) => {
     if (response.status === 0) {
       return;
     }
-    const cardsArray = response.result.cards;
+    const cardsArray = response?.result?.cards;
     setCards(cardsArray);
   };
   const handleLogout = () => {

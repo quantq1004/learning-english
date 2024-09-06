@@ -42,7 +42,7 @@ const LoginContainer = () => {
       return;
     }
 
-    const errorMessage = getErrorMessage(response?.code);
+    const errorMessage = getErrorMessage(response?.result?.code);
     if (errorMessage) {
       enqueueSnackbar(errorMessage, { variant: 'error' });
       return;
@@ -50,7 +50,7 @@ const LoginContainer = () => {
 
     setIsLogined(true);
     if (response && response.result) {
-      const { userId, accessToken } = response.result;
+      const { userId, accessToken } = response?.result?.user;
       if (accessToken) setToken(accessToken);
       if (userId) setUserId(userId);
     }
