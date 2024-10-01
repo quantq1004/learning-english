@@ -6,11 +6,11 @@ import {
   createLesson,
   updateLesson,
   deleteLesson,
-} from '../../apis/lesson';
-import { removeToken, removeUserId } from '../../utils/localStorage';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
-import Welcome from '../../components/Welcome';
+} from '@src/apis/lesson';
+import { removeToken, removeUserId } from '@src/utils/localStorage';
+import Header from '@src/components/Header';
+import Footer from '@src/components/Footer';
+import Welcome from '@src/components/Welcome';
 import LessonItem from './LessonItem';
 import AddLessonDialog from './AddLessonDialog';
 import EditLessonDialog from './EditLessonDialog';
@@ -34,11 +34,12 @@ const LessonContainer = () => {
   const fetchLessons = async () => {
     setLoading(true);
     const response = await getLessons();
-    if (response?.status === 0) {
+    if (!response) {
+      enqueueSnackbar('Get lessons failed', { variant: 'error' });
       setLoading(false);
       return;
     }
-    const lessonsArray = response?.result?.lessons;
+    const lessonsArray = response?.result?.lessons || [];
     setLessons(lessonsArray);
     setLoading(false);
   };
@@ -133,14 +134,15 @@ const LessonContainer = () => {
         {loading && <Typography>Loading...</Typography>}
         {!loading && (
           <Grid container spacing={4}>
-            {lessons.map((lesson) => (
-              <LessonItem
-                key={lesson.id}
-                lesson={lesson}
-                onEditLesson={handleEditLesson}
-                onDeleteLesson={handleOpenDelete}
-              />
-            ))}
+            {lessons &&
+              lessons.map((lesson) => (
+                <LessonItem
+                  key={lesson.id}
+                  lesson={lesson}
+                  onEditLesson={handleEditLesson}
+                  onDeleteLesson={handleOpenDelete}
+                />
+              ))}
           </Grid>
         )}
       </StyledContainer>

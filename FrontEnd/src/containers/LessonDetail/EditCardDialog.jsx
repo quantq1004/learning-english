@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DialogContent, Grid } from '@mui/material';
+import { updateCard } from '@src/apis/card';
 import {
   StyledEditDialog,
   StyledTitleDialog,
@@ -7,7 +8,6 @@ import {
   StyledButton1,
   StyledTextField,
 } from './index.style';
-import { updateCard } from '../../apis/card';
 
 const DialogEditCard = ({
   open,

@@ -1,9 +1,8 @@
-const camelcaseKeys = require('camelcase-keys');
+import camelcaseKeys from 'camelcase-keys';
 
-const camelCaseReq = (req, res, next) => {
-  req.query = camelcaseKeys(req.query, { deep: true });
-  req.body = camelcaseKeys(req.body, { deep: true });
+export default function camelCaseReq(req, res, next) {
+  if (req.body) {
+    req.body = camelcaseKeys(req.body, { deep: true });
+  }
   next();
-};
-
-module.exports = camelCaseReq;
+}

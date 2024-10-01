@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../checkAdminContext';
+import { AuthContext } from '@src/checkAdminContext';
 import {
   StyledCard,
   StyledButton,

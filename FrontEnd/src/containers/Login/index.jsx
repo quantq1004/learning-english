@@ -13,10 +13,10 @@ import {
   Typography,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Copyright from '../../components/Copyright';
-import getErrorMessage from '../../errors/message';
-import { login } from '../../apis/user';
-import { setToken, setUserId } from '../../utils/localStorage';
+import Copyright from '@src/components/Copyright';
+import getErrorMessage from '@src/errors/message';
+import { login } from '@src/apis/user';
+import { setToken, setUserId } from '@src/utils/localStorage';
 import {
   StyledGrid,
   StyledBackgroundGrid,

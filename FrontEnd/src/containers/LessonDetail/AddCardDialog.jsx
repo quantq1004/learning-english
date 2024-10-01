@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { DialogContent, Grid } from '@mui/material';
+import { createCard } from '@src/apis/card';
 import {
   StyledAddDialog,
   StyledTitleDialog,
@@ -7,7 +8,6 @@ import {
   StyledButton1,
   StyledTextField,
 } from './index.style';
-import { createCard } from '../../apis/card';
 
 const DialogAddCard = ({ open, onClose, lessonId, fetchCards }) => {
   const [formValues, setFormValues] = useState({
