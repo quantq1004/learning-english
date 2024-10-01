@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
+import { AuthContext } from '@src/checkAdminContext';
 import { StyledBox, StyledTypography, StyledButton } from './index.style';
-import { AuthContext } from '../../checkAdminContext';
 
 const Welcome = ({ onAddLesson }) => {
   const isAdmin = useContext(AuthContext);

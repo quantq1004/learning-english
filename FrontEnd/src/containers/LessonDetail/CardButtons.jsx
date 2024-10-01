@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { AuthContext } from '../../checkAdminContext';
+import { AuthContext } from '@src/checkAdminContext';
 import { StyledButton, ButtonGrid } from './index.style';
 
 const CardButtons = ({

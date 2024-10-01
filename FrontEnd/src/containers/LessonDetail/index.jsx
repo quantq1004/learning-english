@@ -2,11 +2,11 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import { CssBaseline } from '@mui/material';
-import { getCards, deleteCard } from '../../apis/card';
-import { removeToken, removeUserId } from '../../utils/localStorage';
-import { AuthContext } from '../../checkAdminContext';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
+import { getCards, deleteCard } from '@src/apis/card';
+import { removeToken, removeUserId } from '@src/utils/localStorage';
+import { AuthContext } from '@src/checkAdminContext';
+import Header from '@src/components/Header';
+import Footer from '@src/components/Footer';
 import CardItem from './CardItem';
 import CardButtons from './CardButtons';
 import AddCardDialog from './AddCardDialog';
@@ -43,11 +43,12 @@ const LessonDetail = ({ lessonId }) => {
   const fetchCards = async () => {
     setLoading(true);
     const response = await getCards(lessonId);
-    if (response?.status === 0) {
+    if (!response) {
+      enqueueSnackbar('Failed to fetch cards', { variant: 'error' });
       setLoading(false);
       return;
     }
-    const cardsArray = response?.result?.cards;
+    const cardsArray = response?.result?.cards || [];
     setCards(cardsArray);
     setLoading(false);
   };

@@ -9,7 +9,7 @@ const getLessons = async () => {
     });
     return response;
   } catch (error) {
-    return null;
+    return error.response?.data;
   }
 };
 
@@ -24,7 +24,7 @@ const createLesson = async (title, imageURL) => {
     });
     return response;
   } catch (error) {
-    return null;
+    return error.response?.data;
   }
 };
 
@@ -39,7 +39,7 @@ const updateLesson = async (lessonId, title, imageURL) => {
     });
     return response;
   } catch (error) {
-    return null;
+    return error.response?.data;
   }
 };
 
@@ -53,7 +53,7 @@ const deleteLesson = async (lessonId) => {
     });
     return response;
   } catch (error) {
-    return null;
+    return error.response?.data;
   }
 };
 

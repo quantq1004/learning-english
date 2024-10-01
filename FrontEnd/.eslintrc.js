@@ -32,11 +32,17 @@ module.exports = {
     'import/prefer-default-export': 0,
     'jsx-a11y/click-events-have-key-events': 0,
     'jsx-a11y/no-noninteractive-element-interactions': 0,
+    'react/no-unknown-property': 0,
+    'jsx-a11y/control-has-associated-label': 0,
   },
   settings: {
     'import/resolver': {
+      node: {
+        paths: ['src'], // Make sure node resolves from 'src'
+        extensions: ['.js', '.jsx', '.json'],
+      },
       alias: {
-        map: [['@src', './src']],
+        map: [['@src', path.resolve(__dirname, 'src')]], // Correct path resolution
         extensions: ['.js', '.jsx', '.json'],
       },
     },
