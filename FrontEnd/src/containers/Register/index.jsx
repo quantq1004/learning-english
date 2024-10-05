@@ -32,7 +32,7 @@ const RegisterContainer = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await register(name, email, password);
+    const response = await register(name.trim(), email, password);
 
     if (!response) {
       enqueueSnackbar('Register failed', { variant: 'error' });
