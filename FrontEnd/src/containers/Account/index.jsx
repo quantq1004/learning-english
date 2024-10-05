@@ -22,7 +22,8 @@ const AccountManagement = () => {
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
+  const [initialName, setInitialName] = useState('');
+  const [initialEmail, setInitialEmail] = useState('');
   const [errors, setErrors] = useState({});
 
   const { enqueueSnackbar } = useSnackbar();
@@ -31,36 +32,57 @@ const AccountManagement = () => {
     const response = await getUserDetails(id);
 
     if (response) {
-      setName(response?.result?.user?.name || '');
-      setEmail(response?.result?.user?.email || '');
+      const fetchedName = response?.result?.user?.name || '';
+      const fetchedEmail = response?.result?.user?.email || '';
+
+      setName(fetchedName);
+      setEmail(fetchedEmail);
+      setInitialName(fetchedName);
+      setInitialEmail(fetchedEmail);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const trimmedName = name.trim(); // Trim the name
     const validationErrors = {};
-    if (!name) validationErrors.name = 'Name is required';
+    if (!trimmedName) validationErrors.name = 'Name is required'; // Validate trimmed name
     if (!email) validationErrors.email = 'Email is required';
-    // if (!password) validationErrors.password = 'Password is required';
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
 
-    const response = await updateUser({ name, email, userId });
+    // Only update user if there are changes
+    if (trimmedName === initialName && email === initialEmail) {
+      enqueueSnackbar('No changes made to the account', { variant: 'warning' });
+      setName(initialName);
+      return;
+    }
 
-    if (response?.status === 0) {
-      setErrors({});
-      enqueueSnackbar(getErrorMessage(response?.result?.code), {
+    try {
+      const response = await updateUser({ name: trimmedName, email, userId });
+      setErrors({}); // Clear any previous errors
+
+      if (response?.status === 0) {
+        enqueueSnackbar(getErrorMessage(response?.result?.code), {
+          variant: 'error',
+        });
+        return;
+      }
+
+      enqueueSnackbar('Account updated successfully', { variant: 'success' });
+      setInitialName(trimmedName);
+      setInitialEmail(email);
+    } catch (error) {
+      enqueueSnackbar('An error occurred while updating the account', {
         variant: 'error',
       });
-    } else {
-      setErrors({});
-      enqueueSnackbar('Account updated successfully', { variant: 'success' });
     }
   };
+
   const handleLogout = () => {
     removeToken();
     removeUserId();
@@ -115,20 +137,6 @@ const AccountManagement = () => {
             error={Boolean(errors.email)}
             helperText={errors.email}
           />
-          {/* <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            error={Boolean(errors.password)}
-            helperText={errors.password}
-          /> */}
           <StyledButton type="submit" className="customButton">
             Save Changes
           </StyledButton>
