@@ -100,13 +100,9 @@ export const StyledTitleDialog = styled(DialogTitle)`
 `;
 
 export const StyledDialogActions = styled(DialogActions)`
-  && {
-    justify-content: center;
-    display: flex;
-    flex-direction: row;
-    margin: 20px;
-    margin-bottom: 50px;
-  }
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
 `;
 
 export const StyledButton = styled(Button)`
@@ -123,6 +119,15 @@ export const StyledButton = styled(Button)`
   }
   &&.containedButton {
     margin: 80px 40px 30px;
+    color: ${(props) => props.theme.palette.primary.contrastText};
+    background-color: ${(props) => props.theme.palette.primary.main};
+  }
+
+  &&.secondButton {
+    margin: 30px;
+  }
+  &&.mainButton {
+    margin: 30px;
     color: ${(props) => props.theme.palette.primary.contrastText};
     background-color: ${(props) => props.theme.palette.primary.main};
   }

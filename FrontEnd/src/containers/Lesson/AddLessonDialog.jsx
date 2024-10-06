@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { DialogContent, Grid } from '@mui/material';
+import Dialog from '@src/components/Dialog';
 import {
-  StyledDialog,
-  StyledTitleDialog,
   StyledDialogActions,
   StyledButton,
   StyledTextField,
@@ -28,19 +27,33 @@ const DialogAddLesson = ({
     if (!title) {
       setTitleError('Title is required');
       hasError = true;
-    } else setTitleError('');
+    } else {
+      setTitleError('');
+    }
 
     if (!imageURL) {
       setImageURLError('Image URL is required');
       hasError = true;
-    } else setImageURLError('');
+    } else {
+      setImageURLError('');
+    }
 
     if (!hasError) onSubmitAdd(e);
   };
 
+  const handleClose = () => {
+    onClose();
+    setTitleError('');
+    setImageURLError('');
+  };
+
   return (
-    <StyledDialog open={open} onClose={onClose}>
-      <StyledTitleDialog className="title">Create Lesson</StyledTitleDialog>
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      title="Create Lesson"
+      maxWidth="sm"
+    >
       <DialogContent>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={4} alignItems="center">
@@ -68,16 +81,16 @@ const DialogAddLesson = ({
             </Grid>
           </Grid>
           <StyledDialogActions>
-            <StyledButton onClick={onClose} className="customButton">
+            <StyledButton onClick={handleClose} className="secondButton">
               Cancel
             </StyledButton>
-            <StyledButton type="submit" className="containedButton">
+            <StyledButton type="submit" className="mainButton">
               Add
             </StyledButton>
           </StyledDialogActions>
         </form>
       </DialogContent>
-    </StyledDialog>
+    </Dialog>
   );
 };
 
