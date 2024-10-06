@@ -125,9 +125,11 @@ export const StyledButton = styled(Button)`
 
   &&.secondButton {
     margin: 30px;
+    margin-bottom: 15px;
   }
   &&.mainButton {
     margin: 30px;
+    margin-bottom: 15px;
     color: ${(props) => props.theme.palette.primary.contrastText};
     background-color: ${(props) => props.theme.palette.primary.main};
   }

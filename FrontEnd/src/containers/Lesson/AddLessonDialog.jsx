@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { DialogContent, Grid } from '@mui/material';
+import { COLOR } from '@src/styles/color';
 import Dialog from '@src/components/Dialog';
 import {
   StyledDialogActions,
@@ -53,6 +54,7 @@ const DialogAddLesson = ({
       onClose={handleClose}
       title="Create Lesson"
       maxWidth="sm"
+      titleColor={COLOR.greenV2}
     >
       <DialogContent>
         <form onSubmit={handleSubmit}>

@@ -12,9 +12,10 @@ const StyledDialog = styled(Dialog)`
 
   .dialog-title {
     text-align: center;
-    margin: 0 8px;
+    margin: 8px;
     font-size: ${(props) => `${props.titleFontSize} !important` || '20px'};
     font-weight: ${(props) => `${props.titleFontWeight} !important` || '500'};
+    color: ${(props) => `${props.titleColor} !important` || COLOR.dark};
   }
 
   .close-button {

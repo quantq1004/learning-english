@@ -5,6 +5,7 @@ import { StyledDialog } from './index.style';
 
 const Dialog = ({
   title,
+  titleColor,
   subTitle,
   open,
   width,
@@ -24,6 +25,7 @@ const Dialog = ({
     onClose={onClose}
     borderRadius={borderRadius}
     titleFontSize={titleFontSize}
+    titleColor={titleColor}
     titleFontWeight={titleFontWeight}
   >
     <DialogTitle classes={{ root: 'dialog-title' }}>
